@@ -5,7 +5,6 @@ date: '`r Sys.Date()`'
 site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
-    template: template.html
     highlight: tango
     code_folding: hide
     split_by: section
@@ -26,19 +25,30 @@ output:
 
 # Universe
 
-```{r, echo = FALSE}
-library(ggplot2)
-# Set the default font for ggplot2
-base_font = "Fira Code"
-# for base
-par(family = base_font)
-# for ggplot 2
-theme_set(theme_gray(base_family = base_font))
-# for plotly
-Sys.setenv(plotly_DEFAULTS = list(layout = list(font = list(family = base_font))))
+Some useful code: https://rstudio4edu.github.io/rstudio4edu-book
 
+```{r, echo = FALSE}
+suppressMessages(suppressWarnings({library(ggplot2); library(plotly)}))
 ```
 
+```{r, label = "Set the font", echo = FALSE}
+chosen_font <- "Fira Code"
+
+# It looks like you cannot set the font globally for base graphics in knitr
+# See: https://stackoverflow.com/questions/77771411/how-can-i-set-default-font-for-base-graphics-in-rmarkdown/77771873#77771873
+if (FALSE) {
+	# Set the default font for ggplot2
+	knitr::opts_knit$set(global.device = TRUE)
+	# for base
+	par(family = chosen_font)
+}
+# It works for ggplot 2
+theme_set(theme_gray(base_family = chosen_font))
+# It does not seem to work for plotly
+if(FALSE) {
+	Sys.setenv(plotly_DEFAULTS = list(layout = list(font = list(family = chosen_font))))
+}
+```
 
 ## A first thing to spot
 
@@ -46,10 +56,7 @@ This is the content for section 1.
 
 ```{r plot1, echo=FALSE}
 # Create a plot for section 1
-plot1 <- ggplot(mtcars, aes(x = mpg, y = disp)) + 
-  geom_point() + 
-  labs(title = "Plot for Section 1")
-print(plot1)
+ggplot(mtcars, aes(x = mpg, y = disp)) + geom_point() + labs(title = "Plot for Section 1")
 ```
 
 ## A second thing
@@ -60,7 +67,7 @@ Some cool text
 mu <- 1
 sigma <- 1
 set.seed(1)
-plot(rnorm(1000, mu, sigma), main = "This is a title", family = base_font)
+plot(rnorm(1000, mu, sigma), main = "This is a title", family = chosen_font)
 ```
 
 # Pnl the the alpha
@@ -69,32 +76,26 @@ plot(rnorm(1000, mu, sigma), main = "This is a title", family = base_font)
 
 This is the content for section 2.
 
-```{r plot2, echo=FALSE}
-library(plotly)
+```{r plot2, echo = FALSE}
 # Create a plot for section 2 using plotly
-plot2 <- plot_ly(data = mtcars, x = ~mpg, y = ~wt, type = "scatter", mode = "markers",
-                 marker = list(color = 'blue')) %>%
-  layout(title = "Plot for Section 2", font = list(family = base_font))
-plotly::ggplotly(plot2)
+plot_ly(data = mtcars, x = ~mpg, y = ~wt, type = "scatter", mode = "markers", marker = list(color = 'blue')) %>%
+  layout(title = "Plot for Section 2", font = list(family = chosen_font)) %>%
+  plotly::ggplotly()
 ```
 
 ## By spread
 
 ```{r}
 sigma <- 2
-plot(rnorm(1000, mu, sigma), main = "toto", family = base_font)
+plot(rnorm(1000, mu, sigma), main = "toto", family = chosen_font)
 ```
 
 # Return
 
 This is the content for section 3.
 
-```{r plot3, echo=FALSE}
-library(ggplot2)
+```{r plot3, echo = FALSE}
 # Create a plot for section 3
-plot3 <- ggplot(mtcars, aes(x = hp, y = qsec)) + 
-  geom_point() + 
-  labs(title = "Plot for Section 3")
-print(plot3)
+ggplot(mtcars, aes(x = hp, y = qsec)) + geom_point() + labs(title = "Plot for Section 3")
 ```
 
