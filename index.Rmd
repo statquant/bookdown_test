@@ -25,7 +25,13 @@ output:
 
 # Universe
 
-Some useful code: https://rstudio4edu.github.io/rstudio4edu-book
+Some useful code: https://rstudio4edu.github.io/rstudio4edu-book  
+All runs with:
+```{r, eval = FALSE}
+unlink(c("_book", "_main_files/", "_main.Rmd", "_bookdown_files/"), recursive = TRUE, force = TRUE)
+bookdown::render_book("index.Rmd")
+```
+
 
 ```{r, echo = FALSE}
 suppressMessages(suppressWarnings({library(ggplot2); library(plotly)}))
